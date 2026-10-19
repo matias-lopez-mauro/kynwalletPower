@@ -31,8 +31,13 @@ login.
 
 ## Clarifications
 
-*Pendiente de revisión. Las preguntas abiertas se marcan como [NEEDS CLARIFICATION] en los
-requisitos.*
+### Session 2026-10-19
+
+- Q: Tras un registro exitoso, ¿a dónde se dirige al usuario? → A: Vuelve a la pantalla de
+  inicio de sesión con el correo precargado; el usuario NO queda autenticado y debe iniciar
+  sesión ingresando la contraseña que acaba de crear.
+
+*Las preguntas aún abiertas se marcan como [NEEDS CLARIFICATION] en los requisitos.*
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -45,21 +50,23 @@ obtener una cuenta y poder ingresar a la billetera.
 demostrable.
 
 **Independent Test**: se completan los cuatro campos con datos válidos, se aceptan los términos,
-se presiona "Crear cuenta" y se verifica la confirmación de registro.
+se presiona "Crear cuenta" y se verifica que se vuelve al login con el correo precargado y que el acceso
+requiere la contraseña recién creada.
 
 **Acceptance Scenarios**:
 
 1. **Given** la pantalla de registro cargada, **When** el usuario completa nombre, correo,
    contraseña y confirmación con datos válidos, acepta los términos y presiona "Crear cuenta",
-   **Then** el sistema confirma que la cuenta fue creada con un mensaje que incluye el nombre
-   ingresado.
+   **Then** se crea la cuenta y se muestra la pantalla de inicio de sesión con el aviso
+   "¡Listo, {nombre}! Tu cuenta fue creada. Inicia sesión con tu contraseña.", el correo
+   registrado precargado, el campo de contraseña vacío y el foco en el campo de contraseña.
 2. **Given** el usuario envió el formulario con datos válidos, **When** el registro simulado está
    en curso, **Then** el botón "Crear cuenta" muestra un estado de carga, queda deshabilitado y
    no admite envíos adicionales.
-3. **Given** el registro fue confirmado, **When** el usuario continúa, **Then**
-   [NEEDS CLARIFICATION: destino tras registrarse — (a) volver al login con el correo
-   precargado, (b) quedar autenticado y ver la vista de bienvenida de 001, o (c) solo una vista
-   de confirmación con enlace "Inicia sesión"].
+3. **Given** el login mostrado tras el registro, **When** el usuario ingresa la contraseña que
+   acaba de crear y presiona "Iniciar sesión", **Then** accede a la vista de bienvenida de 001
+   con su nombre; si ingresa otra contraseña, recibe el error genérico de 001 ("Correo o
+   contraseña incorrectos"). El registro por sí solo NUNCA deja al usuario autenticado.
 4. **Given** el usuario escribe el correo con mayúsculas o espacios al inicio o final, **When**
    se registra, **Then** el correo se guarda normalizado (sin espacios periféricos y en
    minúsculas).
@@ -232,9 +239,16 @@ registro se activa "Inicia sesión" y se vuelve al login; se activan "términos 
   de demostración o a una cuenta creada en la sesión, comparando sin distinguir mayúsculas.
 - **FR-013**: Una cuenta creada en la sesión DEBE poder usarse para iniciar sesión en la pantalla
   de login (001) mientras la página no se recargue.
-- **FR-014**: Tras un registro exitoso, el sistema DEBE mostrar una confirmación con el nombre
-  del usuario y mover el foco a ella; el destino posterior queda sujeto a la aclaración de la
-  User Story 1, escenario 3.
+- **FR-014**: Tras un registro exitoso, el sistema DEBE mostrar la pantalla de inicio de sesión
+  (001) con el correo registrado precargado (normalizado), el campo de contraseña vacío, un
+  aviso de confirmación que incluya el nombre del usuario anunciado por tecnologías de
+  asistencia, y el foco en el campo de contraseña.
+- **FR-014a**: El registro NO DEBE autenticar al usuario: el acceso a la vista de bienvenida
+  DEBE requerir que el usuario inicie sesión ingresando la contraseña recién creada, aplicando
+  las mismas validaciones y el mismo mensaje de error genérico de 001.
+- **FR-014b**: Ningún dato del formulario de registro distinto del correo (en particular, las
+  contraseñas) DEBE transferirse ni conservarse en la pantalla de inicio de sesión. El aviso de
+  confirmación DEBE desaparecer cuando el usuario modifique un campo o envíe el formulario.
 - **FR-015**: El sistema NO DEBE registrar ni mostrar las contraseñas en mensajes, registros de
   diagnóstico, URL ni almacenamiento del navegador (Constitución 5.4).
 - **FR-016**: Ambos campos de contraseña DEBEN ocultar los caracteres por defecto y ofrecer, cada

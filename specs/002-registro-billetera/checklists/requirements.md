@@ -31,10 +31,12 @@
 
 ## Notes
 
-- Borrador (iteración 1). Quedan 3 marcadores [NEEDS CLARIFICATION] para la revisión:
-  1. Destino tras un registro exitoso (User Story 1, escenario 3; FR-014).
-  2. Mensaje ante correo ya registrado: explícito vs. genérico (User Story 3, escenario 1).
-  3. Reglas de complejidad de contraseña adicionales a la longitud (FR-005).
+- Borrador (iteración 2). Quedan 2 marcadores [NEEDS CLARIFICATION] para la revisión:
+  1. Mensaje ante correo ya registrado: explícito vs. genérico (User Story 3, escenario 1).
+  2. Reglas de complejidad de contraseña adicionales a la longitud (FR-005).
+- Resuelto en la sesión 2026-10-19: tras registrarse, el usuario vuelve al login con el correo
+  precargado y debe iniciar sesión con la contraseña creada (User Story 1, escenarios 1 y 3;
+  FR-014, FR-014a, FR-014b).
 - Decisiones tomadas por defecto (documentadas en Assumptions): cuentas creadas solo en memoria
   durante la sesión, reutilización de reglas y componentes del login, términos/Google/Apple con
   aviso informativo, nombre de 2–100 caracteres con letras, espacios, apóstrofos y guiones.

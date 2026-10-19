@@ -10,6 +10,11 @@ describe('loadDemoAccounts', () => {
     ]);
   });
 
+  it('acepta un displayName de 100 caracteres (FULL_NAME_MAX_LENGTH, 002 research.md R4)', () => {
+    const displayName = 'x'.repeat(100);
+    expect(loadDemoAccounts(raw([{ ...valid, displayName }]))?.[0]?.displayName).toBe(displayName);
+  });
+
   it.each([
     ['indefinido', undefined],
     ['vacío', ''],
@@ -27,7 +32,7 @@ describe('loadDemoAccounts', () => {
     ['password: 8–128 caracteres (corta)', { ...valid, password: '1234567' }],
     ['password: 8–128 caracteres (larga)', { ...valid, password: 'x'.repeat(129) }],
     ['displayName: obligatorio', { ...valid, displayName: '' }],
-    ['displayName: 1–80 caracteres', { ...valid, displayName: 'x'.repeat(81) }],
+    ['displayName: 1–100 caracteres', { ...valid, displayName: 'x'.repeat(101) }],
     ['tipos incorrectos', { ...valid, password: 12345678 }],
     ['no es objeto', 'cuenta'],
   ])('devuelve null si una cuenta incumple "%s"', (_rule, account) => {

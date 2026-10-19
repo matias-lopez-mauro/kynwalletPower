@@ -32,8 +32,8 @@ las pruebas existentes DEBEN seguir pasando sin cambiar su intención.
 **Purpose**: Confirmar la línea base. El proyecto, las herramientas y los controles ya existen
 desde 001 y no se agregan dependencias (plan.md).
 
-- [ ] T001 Ejecutar `npm ci` y `npm run verify` sobre la rama `feature/registro-matias-lopez-mauro` y confirmar que todo pasa antes de cambiar código. Registrar la cobertura actual como referencia (Constitución 8.1: no debe disminuir)
-- [ ] T002 [P] Obtener del MCP de Figma `get_design_context` sobre el nodo `31:2` del archivo `RkIsF68lskhVAvWODEXceK` y confirmar tipografías, radios, degradado y separaciones del formulario frente a research.md R2. Si algo difiere de 001, anotarlo en research.md antes de implementar. No modificar el archivo de Figma
+- [X] T001 Ejecutar `npm ci` y `npm run verify` sobre la rama `feature/registro-matias-lopez-mauro` y confirmar que todo pasa antes de cambiar código. Registrar la cobertura actual como referencia (Constitución 8.1: no debe disminuir)
+- [X] T002 [P] Obtener del MCP de Figma `get_design_context` sobre el nodo `31:2` del archivo `RkIsF68lskhVAvWODEXceK` y confirmar tipografías, radios, degradado y separaciones del formulario frente a research.md R2. Si algo difiere de 001, anotarlo en research.md antes de implementar. No modificar el archivo de Figma
 
 **Checkpoint**: `npm run verify` en verde sobre la línea base
 
@@ -46,17 +46,17 @@ que todas las historias usan
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T003 [P] Agregar a `src/domain/auth.ts` los tipos de contracts/registration-gateway.md: `RegistrationRequest`, `NewAccount` y `RegistrationResult` (`success` con `displayName` y `email`, `email-taken`, `unavailable`)
-- [ ] T004 [P] Agregar a `src/domain/messages.ts` los textos de data-model.md: `FULL_NAME_REQUIRED`, `FULL_NAME_INVALID`, `NEW_PASSWORD_REQUIRED` ("Ingresa una contraseña"), `PASSWORD_WEAK`, `CONFIRM_PASSWORD_REQUIRED`, `PASSWORDS_MISMATCH`, `TERMS_REQUIRED`, `EMAIL_TAKEN` ("Ya existe una cuenta con este correo"), `REGISTER_UNAVAILABLE` ("Servicio de registro no disponible. Intenta más tarde.") y la función `registered(name)` ("¡Listo, {name}! Tu cuenta fue creada. Inicia sesión con tu contraseña."). No cambiar los textos existentes
-- [ ] T005 Refactor en `src/domain/validation.ts` sin cambio de comportamiento (las pruebas de 001 deben seguir pasando): exportar `validateEmail` y extraer la regla de longitud de contraseña a una función exportada que devuelva el mensaje de longitud (corta o larga) o `undefined`. `validateCredentials` la reutiliza (research.md R4)
-- [ ] T006 [P] Pruebas (que deben fallar) de `InMemoryAccountStore` en `src/infrastructure/InMemoryAccountStore.test.ts`: con `null`, `isAvailable()` es `false`; `findByEmail` compara por correo normalizado; `add` devuelve `added` y la cuenta pasa a encontrarse; `add` con un correo existente, sin distinguir mayúsculas ni espacios, devuelve `email-taken` y no sobrescribe la cuenta (data-model.md)
-- [ ] T007 Implementar `src/infrastructure/InMemoryAccountStore.ts` hasta pasar T006
-- [ ] T008 Refactor de `src/infrastructure/InMemoryAuthGateway.ts` para recibir un `InMemoryAccountStore` en lugar del arreglo de cuentas (contracts/registration-gateway.md). Adaptar `src/infrastructure/InMemoryAuthGateway.test.ts` construyendo el almacén; los casos C1–C6 de 001 deben seguir pasando sin cambiar su intención. Depende de T007
-- [ ] T009 [P] Pruebas y cambio en `src/infrastructure/loadDemoAccounts.ts` y su prueba: el límite de `displayName` pasa de 80 a `FULL_NAME_MAX_LENGTH = 100`, constante exportada desde `src/domain/validation.ts` (research.md R4). Agregar los casos de 100 caracteres (válido) y 101 (inválido)
-- [ ] T010 Actualizar `src/main.tsx` para crear un único `InMemoryAccountStore` y pasarlo a `InMemoryAuthGateway` (contracts/registration-gateway.md, composición). Depende de T008
-- [ ] T011 [P] Extraer de `src/ui/features/login/loginReducer.ts` el filtrado de errores visibles a `src/ui/forms/visibleErrors.ts` como función genérica sobre los campos (research.md R7), con su prueba `src/ui/forms/visibleErrors.test.ts`. `loginReducer` la reutiliza y sus pruebas siguen pasando
-- [ ] T012 [P] Pruebas (que deben fallar) en `src/ui/layout/BrandPanel/BrandPanel.test.tsx`: sin props muestra los textos del login; con `title` y `subtitle` muestra "Comienza tu camino financiero." y su texto de apoyo; la tarjeta es `aria-hidden` (research.md R9)
-- [ ] T013 Implementar las props `title` y `subtitle` de `src/ui/layout/BrandPanel/BrandPanel.tsx`, con los textos del login por defecto, hasta pasar T012. `LoginScreen` acepta y propaga esas props
+- [X] T003 [P] Agregar a `src/domain/auth.ts` los tipos de contracts/registration-gateway.md: `RegistrationRequest`, `NewAccount` y `RegistrationResult` (`success` con `displayName` y `email`, `email-taken`, `unavailable`)
+- [X] T004 [P] Agregar a `src/domain/messages.ts` los textos de data-model.md: `FULL_NAME_REQUIRED`, `FULL_NAME_INVALID`, `NEW_PASSWORD_REQUIRED` ("Ingresa una contraseña"), `PASSWORD_WEAK`, `CONFIRM_PASSWORD_REQUIRED`, `PASSWORDS_MISMATCH`, `TERMS_REQUIRED`, `EMAIL_TAKEN` ("Ya existe una cuenta con este correo"), `REGISTER_UNAVAILABLE` ("Servicio de registro no disponible. Intenta más tarde.") y la función `registered(name)` ("¡Listo, {name}! Tu cuenta fue creada. Inicia sesión con tu contraseña."). No cambiar los textos existentes
+- [X] T005 Refactor en `src/domain/validation.ts` sin cambio de comportamiento (las pruebas de 001 deben seguir pasando): exportar `validateEmail` y extraer la regla de longitud de contraseña a una función exportada que devuelva el mensaje de longitud (corta o larga) o `undefined`. `validateCredentials` la reutiliza (research.md R4)
+- [X] T006 [P] Pruebas (que deben fallar) de `InMemoryAccountStore` en `src/infrastructure/InMemoryAccountStore.test.ts`: con `null`, `isAvailable()` es `false`; `findByEmail` compara por correo normalizado; `add` devuelve `added` y la cuenta pasa a encontrarse; `add` con un correo existente, sin distinguir mayúsculas ni espacios, devuelve `email-taken` y no sobrescribe la cuenta (data-model.md)
+- [X] T007 Implementar `src/infrastructure/InMemoryAccountStore.ts` hasta pasar T006
+- [X] T008 Refactor de `src/infrastructure/InMemoryAuthGateway.ts` para recibir un `InMemoryAccountStore` en lugar del arreglo de cuentas (contracts/registration-gateway.md). Adaptar `src/infrastructure/InMemoryAuthGateway.test.ts` construyendo el almacén; los casos C1–C6 de 001 deben seguir pasando sin cambiar su intención. Depende de T007
+- [X] T009 [P] Pruebas y cambio en `src/infrastructure/loadDemoAccounts.ts` y su prueba: el límite de `displayName` pasa de 80 a `FULL_NAME_MAX_LENGTH = 100`, constante exportada desde `src/domain/validation.ts` (research.md R4). Agregar los casos de 100 caracteres (válido) y 101 (inválido)
+- [X] T010 Actualizar `src/main.tsx` para crear un único `InMemoryAccountStore` y pasarlo a `InMemoryAuthGateway` (contracts/registration-gateway.md, composición). Depende de T008
+- [X] T011 [P] Extraer de `src/ui/features/login/loginReducer.ts` el filtrado de errores visibles a `src/ui/forms/visibleErrors.ts` como función genérica sobre los campos (research.md R7), con su prueba `src/ui/forms/visibleErrors.test.ts`. `loginReducer` la reutiliza y sus pruebas siguen pasando
+- [X] T012 [P] Pruebas (que deben fallar) en `src/ui/layout/BrandPanel/BrandPanel.test.tsx`: sin props muestra los textos del login; con `title` y `subtitle` muestra "Comienza tu camino financiero." y su texto de apoyo; la tarjeta es `aria-hidden` (research.md R9)
+- [X] T013 Implementar las props `title` y `subtitle` de `src/ui/layout/BrandPanel/BrandPanel.tsx`, con los textos del login por defecto, hasta pasar T012. `LoginScreen` acepta y propaga esas props
 
 **Checkpoint**: `npm run verify` sigue en verde; el login se comporta igual que antes
 

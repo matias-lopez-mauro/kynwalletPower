@@ -29,8 +29,20 @@ estilos, pruebas, controles y diseño responsivo de 001 se heredan sin cambios
   - Separación vertical entre campos: 16 px (en el login es 22 px). Etiqueta a 7 px del campo.
   - El título empieza más arriba que en el login (y = 140 frente a 250), porque el formulario
     es más alto.
-- **Pending (implementación)**: confirmar tipografías, radios y degradado con
-  `get_design_context` sobre `31:2`. El metadata no los incluye; se espera que coincidan con 001.
+- **Verificado (T002, `get_design_context` sobre `31:2`, 2026-10-19)**:
+  - **Coinciden con 001**: tipografía Inter (título 30 px Bold, titular 44 px Bold con
+    line-height 1.08, texto de apoyo 17 px, etiquetas 14 px Medium, botón 16 px SemiBold);
+    radios de 12 px en campos y botones, 6 px en la casilla y 22 px en la tarjeta; bordes de
+    1,5 px; colores de texto y de borde.
+  - **Diferencias con 001** (se registran para la revisión visual, SC-007; no se implementan sin
+    aprobación de diseño, para no duplicar el panel de marca):
+    - Degradado del panel a `70.73deg, #ff8a65 31.7%, #ef5226 83.46%`; el login usa
+      `121.19deg, #ff8a65 0%, #ef5226 70.71%`.
+    - Logo formado por dos puntos (10×28 y 14×14) en lugar del SVG de 20×44 del login.
+    - Chip de la tarjeta con una línea interior `rgba(22,24,44,.15)` de 4 px.
+  - **Recursos gráficos**: la política de red del entorno bloquea `www.figma.com`, así que no
+    se descargaron los SVG del frame. Se reutilizan los del login (`logo-mark.svg`, `eye.svg`,
+    `social-placeholder.svg`), que corresponden a los mismos marcadores de posición.
 
 ## R3. Almacén de cuentas compartido
 

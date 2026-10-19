@@ -13,7 +13,7 @@
 
 ## Requirement Completeness
 
-- [ ] No [NEEDS CLARIFICATION] markers remain
+- [x] No [NEEDS CLARIFICATION] markers remain
 - [x] Requirements are testable and unambiguous
 - [x] Success criteria are measurable
 - [x] Success criteria are technology-agnostic (no implementation details)
@@ -31,12 +31,14 @@
 
 ## Notes
 
-- Borrador (iteración 2). Quedan 2 marcadores [NEEDS CLARIFICATION] para la revisión:
-  1. Mensaje ante correo ya registrado: explícito vs. genérico (User Story 3, escenario 1).
-  2. Reglas de complejidad de contraseña adicionales a la longitud (FR-005).
-- Resuelto en la sesión 2026-10-19: tras registrarse, el usuario vuelve al login con el correo
-  precargado y debe iniciar sesión con la contraseña creada (User Story 1, escenarios 1 y 3;
-  FR-014, FR-014a, FR-014b).
+- Borrador (iteración 3). No quedan marcadores [NEEDS CLARIFICATION]; resueltos en la sesión
+  2026-10-19:
+  1. Tras registrarse, el usuario vuelve al login con el correo precargado y debe iniciar
+     sesión con la contraseña creada (User Story 1, escenarios 1 y 3; FR-014, FR-014a, FR-014b).
+  2. Correo ya registrado: mensaje explícito "Ya existe una cuenta con este correo" (User Story
+     3, escenario 1; FR-012). Se documenta en Assumptions que revela la existencia del correo.
+  3. Contraseña: 8–128 caracteres y al menos una mayúscula, un número o un símbolo, solo en el
+     registro (User Story 2, escenarios 5 y 6; FR-005, FR-005a, FR-005b).
 - Decisiones tomadas por defecto (documentadas en Assumptions): cuentas creadas solo en memoria
   durante la sesión, reutilización de reglas y componentes del login, términos/Google/Apple con
   aviso informativo, nombre de 2–100 caracteres con letras, espacios, apóstrofos y guiones.

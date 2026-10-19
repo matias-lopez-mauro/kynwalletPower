@@ -36,8 +36,10 @@ login.
 - Q: Tras un registro exitoso, ¿a dónde se dirige al usuario? → A: Vuelve a la pantalla de
   inicio de sesión con el correo precargado; el usuario NO queda autenticado y debe iniciar
   sesión ingresando la contraseña que acaba de crear.
-
-*Las preguntas aún abiertas se marcan como [NEEDS CLARIFICATION] en los requisitos.*
+- Q: ¿Qué mensaje se muestra si el correo ya tiene una cuenta? → A: Un mensaje explícito: "Ya
+  existe una cuenta con este correo".
+- Q: ¿Qué reglas debe cumplir la contraseña en el registro? → A: La misma longitud del login
+  (8 a 128 caracteres) y, además, al menos una mayúscula, un número o un símbolo (basta uno).
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -100,14 +102,21 @@ aceptar términos, y se verifican los mensajes de cada campo.
    electrónico válido".
 4. **Given** una contraseña con menos de 8 caracteres, **When** el usuario sale del campo o
    envía el formulario, **Then** se muestra "La contraseña debe tener al menos 8 caracteres".
-5. **Given** una confirmación distinta de la contraseña, **When** el usuario sale del campo de
+5. **Given** una contraseña de 8 a 128 caracteres compuesta solo por minúsculas y espacios (por
+   ejemplo, "clavesegura"), **When** el usuario sale del campo o envía el formulario, **Then**
+   se muestra "La contraseña debe incluir al menos una mayúscula, un número o un símbolo" y no
+   se ejecuta el registro.
+6. **Given** una contraseña de 8 a 128 caracteres que incluye al menos una mayúscula, un número
+   o un símbolo (por ejemplo, "Clavesegura", "clavesegura1" o "clave-segura"), **When** el
+   usuario sale del campo, **Then** no se muestra ningún mensaje de validación de contraseña.
+7. **Given** una confirmación distinta de la contraseña, **When** el usuario sale del campo de
    confirmación o envía el formulario, **Then** se muestra "Las contraseñas no coinciden".
-6. **Given** la casilla de términos sin marcar, **When** el usuario presiona "Crear cuenta",
+8. **Given** la casilla de términos sin marcar, **When** el usuario presiona "Crear cuenta",
    **Then** se muestra "Debes aceptar los términos y condiciones" y no se ejecuta el registro.
-7. **Given** un campo con mensaje de validación, **When** el usuario corrige el valor, **Then**
+9. **Given** un campo con mensaje de validación, **When** el usuario corrige el valor, **Then**
    el mensaje de ese campo desaparece; si cambia la contraseña, la validación de coincidencia
    de la confirmación se reevalúa.
-8. **Given** un campo con error, **When** es leído por un lector de pantalla, **Then** se
+10. **Given** un campo con error, **When** es leído por un lector de pantalla, **Then** se
    anuncia el mensaje de error asociado a ese campo.
 
 ---
@@ -126,10 +135,9 @@ se verifica el mensaje y el acceso al login.
 **Acceptance Scenarios**:
 
 1. **Given** un correo que ya pertenece a una cuenta (de demostración o registrada en la sesión),
-   **When** el usuario envía el formulario, **Then** no se crea la cuenta y se muestra
-   [NEEDS CLARIFICATION: mensaje explícito "Ya existe una cuenta con este correo" con enlace
-   "Inicia sesión" (mejor usabilidad, revela que el correo existe), o mensaje genérico que no lo
-   revele, coherente con 001 FR-010].
+   **When** el usuario envía el formulario, **Then** no se crea la cuenta y se muestra "Ya
+   existe una cuenta con este correo" junto al campo de correo, anunciado por tecnologías de
+   asistencia, y el foco se mueve al campo de correo.
 2. **Given** se muestra ese mensaje, **When** el usuario modifica el correo, **Then** el mensaje
    desaparece.
 3. **Given** un intento rechazado por correo existente, **When** se muestra el mensaje, **Then**
@@ -221,9 +229,13 @@ registro se activa "Inicia sesión" y se vuelve al login; se activan "términos 
   formato válido, máximo 254 caracteres), usando una única fuente de esas reglas (Constitución
   4.1).
 - **FR-005**: El sistema DEBE validar que la contraseña sea obligatoria y tenga entre 8 y 128
-  caracteres, usando la misma regla del login. [NEEDS CLARIFICATION: ¿se exigen reglas de
-  complejidad adicionales en el registro (mayúscula, número, símbolo) o se mantiene solo la
-  longitud, como en 001?]
+  caracteres, usando la misma regla de longitud del login (fuente única, Constitución 4.1).
+- **FR-005a**: Además, en el registro la contraseña DEBE incluir al menos un carácter que sea
+  una letra mayúscula, un dígito o un símbolo (cualquier carácter que no sea letra, dígito ni
+  espacio); basta con cumplir uno de los tres. Si no se cumple, se DEBE mostrar "La contraseña
+  debe incluir al menos una mayúscula, un número o un símbolo".
+- **FR-005b**: La regla de FR-005a aplica solo a la creación de contraseñas en el registro; la
+  validación del login (001) NO cambia y sigue verificando únicamente la longitud.
 - **FR-006**: El sistema DEBE validar que la confirmación sea obligatoria y coincida exactamente
   con la contraseña.
 - **FR-007**: El sistema DEBE exigir que la casilla de términos y condiciones esté marcada para
@@ -236,7 +248,9 @@ registro se activa "Inicia sesión" y se vuelve al login; se activan "términos 
 - **FR-011**: El registro simulado DEBE incluir una espera breve (aprox. 1 segundo) con indicador
   de carga, durante la cual el envío queda deshabilitado.
 - **FR-012**: El sistema DEBE rechazar el registro de un correo que ya pertenezca a una cuenta
-  de demostración o a una cuenta creada en la sesión, comparando sin distinguir mayúsculas.
+  de demostración o a una cuenta creada en la sesión, comparando sin distinguir mayúsculas
+  (tras normalizar), y DEBE mostrar "Ya existe una cuenta con este correo" junto al campo de
+  correo.
 - **FR-013**: Una cuenta creada en la sesión DEBE poder usarse para iniciar sesión en la pantalla
   de login (001) mientras la página no se recargue.
 - **FR-014**: Tras un registro exitoso, el sistema DEBE mostrar la pantalla de inicio de sesión
@@ -311,6 +325,10 @@ registro se activa "Inicia sesión" y se vuelve al login; se activan "términos 
   correo y la recuperación de contraseña quedan fuera del alcance; sus elementos se muestran solo
   por fidelidad al diseño.
 - El idioma de la interfaz es español.
+- El mensaje explícito ante correo ya registrado revela que el correo existe. Es una decisión
+  aceptada en la revisión por usabilidad para esta demostración, y difiere a propósito del
+  mensaje genérico del login (001 FR-010), que no cambia. Si la funcionalidad pasa a un entorno
+  real, esta decisión DEBE revisarse con el responsable de seguridad (Constitución, Principio V).
 - No existen BRD ni ARD para esta funcionalidad; si se incorporan, esta especificación DEBE
   alinearse con ellos (Constitución, Principio VI).
 - El diseño de referencia corresponde a escritorio (1440 × 1024); la adaptación a móvil se

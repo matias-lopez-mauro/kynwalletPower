@@ -1,11 +1,15 @@
-# KynWallet · Inicio de sesión (demo)
+# KynWallet · Inicio de sesión y registro (demo)
 
-Demostración funcional, solo del lado del cliente, de la pantalla de inicio de sesión de la
-billetera virtual KynWallet. Reproduce el diseño de Figma
-([01 · Login](https://www.figma.com/design/f7uDsv8sh6ZOtK2OitTqtg/Billetera-Virtual---Prototipos?node-id=2-2)),
-valida los campos y simula la autenticación contra cuentas ficticias, sin backend ni base de datos.
+Demostración funcional, solo del lado del cliente, de las pantallas de inicio de sesión y de
+registro de la billetera virtual KynWallet. Reproduce el diseño de Figma (frames `01 · Login` y
+`04 · Registro`), valida los campos y simula la autenticación y el registro en memoria, sin
+backend ni base de datos.
 
-Especificación, plan y tareas: [`specs/001-login-billetera/`](specs/001-login-billetera/).
+Especificación, plan y tareas:
+
+- Inicio de sesión: [`specs/001-login-billetera/`](specs/001-login-billetera/)
+- Registro: [`specs/002-registro-billetera/`](specs/002-registro-billetera/) (validación manual en
+  [`quickstart.md`](specs/002-registro-billetera/quickstart.md))
 
 ## Requisitos
 
@@ -24,12 +28,14 @@ Edita `.env.local` y define al menos una cuenta **ficticia** en `VITE_DEMO_USERS
 VITE_DEMO_USERS=[{"email":"tu.correo@example.com","password":"minimo-8-caracteres","displayName":"Tu Nombre"}]
 ```
 
-- `password`: de 8 a 128 caracteres. `displayName`: de 1 a 80 caracteres. Los correos no se pueden repetir.
+- `password`: de 8 a 128 caracteres. `displayName`: de 1 a 100 caracteres. Los correos no se pueden repetir.
 - `.env.local` no se versiona: la Constitución del proyecto (regla 5.3) prohíbe credenciales en el
   código fuente o en archivos versionados.
 - ⚠️ Al ser una aplicación solo-cliente, el valor de `VITE_DEMO_USERS` queda incluido en el bundle
   compilado. Usa únicamente cuentas ficticias.
-- Si la variable falta o es inválida, la pantalla muestra "Servicio de acceso no disponible".
+- Si la variable falta o es inválida, el login muestra "Servicio de acceso no disponible" y el
+  registro, "Servicio de registro no disponible".
+- Las cuentas creadas con "Regístrate" viven solo en memoria: se pierden al recargar la página.
 
 ## Scripts
 
@@ -51,14 +57,16 @@ Clean Architecture ligera. Las dependencias apuntan hacia el dominio y ESLint lo
 ```text
 src/
 ├── domain/          # Tipos, reglas de validación y textos. Sin React.
-├── application/     # Caso de uso `authenticate` y puerto `AuthGateway`
-├── infrastructure/  # `InMemoryAuthGateway` (simulación, 1 s) y `loadDemoAccounts`
+├── application/     # Casos de uso `authenticate` y `register`; puertos `AuthGateway` y `RegistrationGateway`
+├── infrastructure/  # `InMemoryAccountStore` compartido, gateways en memoria (1 s) y `loadDemoAccounts`
 ├── ui/
 │   ├── styles/      # Tokens de Figma (`tokens.css`) y estilos globales
 │   ├── components/  # Button, TextField, PasswordField, Checkbox, SocialButton, Divider, Alert
 │   ├── layout/      # BrandPanel
-│   └── features/login/  # LoginScreen, LoginForm, WelcomeView, reducer y hook
-├── App.tsx
+│   ├── forms/       # Piezas comunes a los formularios (errores visibles, estilos)
+│   ├── features/login/     # LoginScreen, LoginForm, WelcomeView, reducer y hook
+│   └── features/register/  # RegisterForm, reducer y hook
+├── App.tsx          # Navegación login ↔ registro (sin router)
 └── main.tsx         # Raíz de composición (inyección de dependencias)
 ```
 
@@ -73,5 +81,9 @@ requisito que verifica (por ejemplo, `US2-1`, `FR-012`) para mantener la trazabi
   en `src/ui/styles/tokens.css`). Detalle en `specs/001-login-billetera/research.md` (R3).
 - Los iconos de Google, Apple y del control de visibilidad son los marcadores de posición del
   diseño de Figma.
-- Fuera de alcance: recuperar contraseña, registro, acceso con Google/Apple, persistencia de
-  "Recordarme" y bloqueo por intentos fallidos. Al activarlos se muestra un aviso.
+- En el registro, "Ya existe una cuenta con este correo" revela si un correo está registrado.
+  Es una decisión aceptada para la demo y debe revisarse con seguridad antes de un entorno real
+  (`specs/002-registro-billetera/plan.md`, Complexity Tracking).
+- Fuera de alcance: recuperar contraseña, términos y condiciones, acceso o registro con
+  Google/Apple, persistencia de "Recordarme" y bloqueo por intentos fallidos. Al activarlos se
+  muestra un aviso.

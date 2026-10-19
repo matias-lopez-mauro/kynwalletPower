@@ -73,23 +73,23 @@ y solo accede tras ingresar la contraseña creada
 
 > Escribir primero; confirmar que FALLAN antes de implementar
 
-- [ ] T014 [P] [US1] Pruebas de `normalizeFullName` en `src/domain/validation.test.ts`: recorta los espacios periféricos y colapsa los internos (`'  Ana   Pérez '` → `'Ana Pérez'`)
-- [ ] T015 [P] [US1] Pruebas de `InMemoryRegistrationGateway` en `src/infrastructure/InMemoryRegistrationGateway.test.ts`: R1, que una cuenta nueva devuelva `success` con `displayName` y `email` normalizados y que después `InMemoryAuthGateway` con el mismo almacén la autentique (FR-013, SC-004); R3, almacén no disponible → `unavailable`; R4, una excepción interna → `unavailable` sin rechazar la promesa; espera configurable `delayMs`
-- [ ] T016 [P] [US1] Pruebas del caso de uso en `src/application/register.test.ts`: U1, delega `fullName` y `email` normalizados y la contraseña sin modificar, sin `confirmPassword` ni `acceptedTerms`; U2, si el gateway lanza una excepción devuelve `unavailable`
-- [ ] T017 [P] [US1] Pruebas de `registerReducer` en `src/ui/features/register/registerReducer.test.ts`: `change` actualiza valores; `submit` válido pasa a `submitting` y un segundo `submit` se ignora (REG-US1-2, FR-011); `result` `unavailable` muestra el estado `unavailable`
-- [ ] T018 [P] [US1] Pruebas de `loginReducer` en `src/ui/features/login/loginReducer.test.ts`: `createInitialLoginState({ email, registeredNotice })` precarga el correo y el aviso; sin argumentos equivale al estado inicial de 001; editar un campo o enviar limpia `registeredNotice` (FR-014b); `logout` vuelve al estado vacío
-- [ ] T019 [US1] Pruebas de integración en `src/App.test.tsx`: desde el login, "Regístrate" abre "Crea tu cuenta" (REG-US5-1, FR-019); al completar datos válidos y "Crear cuenta", el botón queda en carga ("Creando cuenta…", `aria-busy`) y luego aparece el login con el correo normalizado precargado, la contraseña vacía y con el foco, y el aviso `status` con el nombre (REG-US1-1, REG-US1-4, FR-014); con la contraseña creada se llega a "¡Bienvenido, {nombre}!", y con otra, a "Correo o contraseña incorrectos" (REG-US1-3, FR-014a); Enter en un campo envía el formulario (REG-US1-5). Usar `delayMs: 0` o temporizadores falsos
+- [X] T014 [P] [US1] Pruebas de `normalizeFullName` en `src/domain/validation.test.ts`: recorta los espacios periféricos y colapsa los internos (`'  Ana   Pérez '` → `'Ana Pérez'`)
+- [X] T015 [P] [US1] Pruebas de `InMemoryRegistrationGateway` en `src/infrastructure/InMemoryRegistrationGateway.test.ts`: R1, que una cuenta nueva devuelva `success` con `displayName` y `email` normalizados y que después `InMemoryAuthGateway` con el mismo almacén la autentique (FR-013, SC-004); R3, almacén no disponible → `unavailable`; R4, una excepción interna → `unavailable` sin rechazar la promesa; espera configurable `delayMs`
+- [X] T016 [P] [US1] Pruebas del caso de uso en `src/application/register.test.ts`: U1, delega `fullName` y `email` normalizados y la contraseña sin modificar, sin `confirmPassword` ni `acceptedTerms`; U2, si el gateway lanza una excepción devuelve `unavailable`
+- [X] T017 [P] [US1] Pruebas de `registerReducer` en `src/ui/features/register/registerReducer.test.ts`: `change` actualiza valores; `submit` válido pasa a `submitting` y un segundo `submit` se ignora (REG-US1-2, FR-011); `result` `unavailable` muestra el estado `unavailable`
+- [X] T018 [P] [US1] Pruebas de `loginReducer` en `src/ui/features/login/loginReducer.test.ts`: `createInitialLoginState({ email, registeredNotice })` precarga el correo y el aviso; sin argumentos equivale al estado inicial de 001; editar un campo o enviar limpia `registeredNotice` (FR-014b); `logout` vuelve al estado vacío
+- [X] T019 [US1] Pruebas de integración en `src/App.test.tsx`: desde el login, "Regístrate" abre "Crea tu cuenta" (REG-US5-1, FR-019); al completar datos válidos y "Crear cuenta", el botón queda en carga ("Creando cuenta…", `aria-busy`) y luego aparece el login con el correo normalizado precargado, la contraseña vacía y con el foco, y el aviso `status` con el nombre (REG-US1-1, REG-US1-4, FR-014); con la contraseña creada se llega a "¡Bienvenido, {nombre}!", y con otra, a "Correo o contraseña incorrectos" (REG-US1-3, FR-014a); Enter en un campo envía el formulario (REG-US1-5). Usar `delayMs: 0` o temporizadores falsos
 
 ### Implementation for User Story 1
 
-- [ ] T020 [P] [US1] Implementar `normalizeFullName` en `src/domain/validation.ts` hasta pasar T014
-- [ ] T021 [P] [US1] Crear el puerto `src/application/ports/RegistrationGateway.ts` y el caso de uso `src/application/register.ts` (`createRegister`) hasta pasar T016
-- [ ] T022 [P] [US1] Implementar `src/infrastructure/InMemoryRegistrationGateway.ts` hasta pasar T015. Depende de T007
-- [ ] T023 [US1] Implementar `src/ui/features/register/registerReducer.ts` y `useRegisterForm.ts` hasta pasar T017. El hook llama a `register`, bloquea envíos concurrentes y, en `success`, invoca `onRegistered({ email, displayName })`
-- [ ] T024 [US1] Implementar `src/ui/features/register/RegisterForm.tsx` y `RegisterForm.module.css` según contracts/ui-registro.md y Figma `31:2`: título, subtítulo, los cuatro campos (`TextField` y dos `PasswordField` con `autocomplete=new-password`), casilla de términos (`Checkbox`), botón "Crear cuenta" con `loadingLabel` "Creando cuenta…", divisor "o regístrate con", botones sociales y pie "¿Ya tienes cuenta? Inicia sesión"; separación entre campos de 16 px (research.md R2)
-- [ ] T025 [US1] Implementar en `src/ui/features/login/loginReducer.ts` y `useLoginForm.ts` el estado inicial parametrizable (`createInitialLoginState`) y `registeredNotice`, hasta pasar T018
-- [ ] T026 [US1] Actualizar `src/ui/features/login/LoginForm.tsx`: props `onRegister`, `initialEmail` y `registeredNotice`; "Regístrate" llama a `onRegister`; con `initialEmail`, el foco inicial va a la contraseña; el aviso se muestra con `Alert` en rol `status`. Actualizar `LoginForm.test.tsx`: la prueba de 001 US5-1 deja de incluir "Regístrate"
-- [ ] T027 [US1] Implementar la navegación en `src/App.tsx` (research.md R6): estado `Route`, `key` distinto por pantalla para no conservar datos, `BrandPanel` con los textos del registro en esa pantalla. Actualizar `src/main.tsx` para crear `register` con el mismo almacén e inyectarlo en `App`, hasta pasar T019
+- [X] T020 [P] [US1] Implementar `normalizeFullName` en `src/domain/validation.ts` hasta pasar T014
+- [X] T021 [P] [US1] Crear el puerto `src/application/ports/RegistrationGateway.ts` y el caso de uso `src/application/register.ts` (`createRegister`) hasta pasar T016
+- [X] T022 [P] [US1] Implementar `src/infrastructure/InMemoryRegistrationGateway.ts` hasta pasar T015. Depende de T007
+- [X] T023 [US1] Implementar `src/ui/features/register/registerReducer.ts` y `useRegisterForm.ts` hasta pasar T017. El hook llama a `register`, bloquea envíos concurrentes y, en `success`, invoca `onRegistered({ email, displayName })`
+- [X] T024 [US1] Implementar `src/ui/features/register/RegisterForm.tsx` y `RegisterForm.module.css` según contracts/ui-registro.md y Figma `31:2`: título, subtítulo, los cuatro campos (`TextField` y dos `PasswordField` con `autocomplete=new-password`), casilla de términos (`Checkbox`), botón "Crear cuenta" con `loadingLabel` "Creando cuenta…", divisor "o regístrate con", botones sociales y pie "¿Ya tienes cuenta? Inicia sesión"; separación entre campos de 16 px (research.md R2)
+- [X] T025 [US1] Implementar en `src/ui/features/login/loginReducer.ts` y `useLoginForm.ts` el estado inicial parametrizable (`createInitialLoginState`) y `registeredNotice`, hasta pasar T018
+- [X] T026 [US1] Actualizar `src/ui/features/login/LoginForm.tsx`: props `onRegister`, `initialEmail` y `registeredNotice`; "Regístrate" llama a `onRegister`; con `initialEmail`, el foco inicial va a la contraseña; el aviso se muestra con `Alert` en rol `status`. Actualizar `LoginForm.test.tsx`: la prueba de 001 US5-1 deja de incluir "Regístrate"
+- [X] T027 [US1] Implementar la navegación en `src/App.tsx` (research.md R6): estado `Route`, `key` distinto por pantalla para no conservar datos, `BrandPanel` con los textos del registro en esa pantalla. Actualizar `src/main.tsx` para crear `register` con el mismo almacén e inyectarlo en `App`, hasta pasar T019
 
 **Checkpoint**: US1 funciona de punta a punta (quickstart 1–4) y las pruebas de 001 siguen en verde
 
@@ -103,7 +103,7 @@ y solo accede tras ingresar la contraseña creada
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T028 [P] [US2] Pruebas de `validateRegistration` en `src/domain/validation.test.ts` con `it.each`:
+- [X] T028 [P] [US2] Pruebas de `validateRegistration` en `src/domain/validation.test.ts` con `it.each`:
   - **Requeridos** (REG-US2-1): campos vacíos → `FULL_NAME_REQUIRED`, `EMAIL_REQUIRED`, `NEW_PASSWORD_REQUIRED`, `CONFIRM_PASSWORD_REQUIRED` y `TERMS_REQUIRED`.
   - **Nombre** (REG-US2-2, FR-003): "A", "Ana2", "Ana@", 101 caracteres y "--" son inválidos; "Ana", "María José O'Neill-Peña", "Ñandú Ávila" y "Ana O’Neil" son válidos.
   - **Correo** (REG-US2-3): mismas reglas que en 001.
@@ -115,14 +115,14 @@ y solo accede tras ingresar la contraseña creada
   - **Confirmación** (REG-US2-7, FR-006): distinta → `PASSWORDS_MISMATCH`; la comparación es exacta, incluidos espacios y mayúsculas.
   - **Términos** (REG-US2-8, FR-007): sin aceptar → `TERMS_REQUIRED`.
   - **Un mensaje por campo**: cada campo devuelve un único mensaje, en el orden de data-model.md.
-- [ ] T029 [P] [US2] Pruebas de `validateCredentials` en `src/domain/validation.test.ts` (FR-005b): "clavesegura" sigue siendo válida en el login
-- [ ] T030 [P] [US2] Pruebas de `registerReducer` en `src/ui/features/register/registerReducer.test.ts`: los errores solo se ven en campos tocados (FR-008); `submit` con errores marca todo como tocado y no pasa a `submitting` (FR-009); editar `password` revalida `confirmPassword` si estaba tocado (REG-US2-9); corregir un campo oculta su error
-- [ ] T031 [P] [US2] Pruebas de componente en `src/ui/features/register/RegisterForm.test.tsx`: enviar vacío muestra los cinco mensajes y enfoca "Nombre completo" (REG-US2-1); salir de un campo inválido muestra su error (REG-US2-2 a REG-US2-7); los campos con error tienen `aria-invalid` y `aria-describedby` hacia su mensaje (REG-US2-10, FR-018); sin violaciones de `axe`
+- [X] T029 [P] [US2] Pruebas de `validateCredentials` en `src/domain/validation.test.ts` (FR-005b): "clavesegura" sigue siendo válida en el login
+- [X] T030 [P] [US2] Pruebas de `registerReducer` en `src/ui/features/register/registerReducer.test.ts`: los errores solo se ven en campos tocados (FR-008); `submit` con errores marca todo como tocado y no pasa a `submitting` (FR-009); editar `password` revalida `confirmPassword` si estaba tocado (REG-US2-9); corregir un campo oculta su error
+- [X] T031 [P] [US2] Pruebas de componente en `src/ui/features/register/RegisterForm.test.tsx`: enviar vacío muestra los cinco mensajes y enfoca "Nombre completo" (REG-US2-1); salir de un campo inválido muestra su error (REG-US2-2 a REG-US2-7); los campos con error tienen `aria-invalid` y `aria-describedby` hacia su mensaje (REG-US2-10, FR-018); sin violaciones de `axe`
 
 ### Implementation for User Story 2
 
-- [ ] T032 [US2] Implementar `validateRegistration` en `src/domain/validation.ts` reutilizando `validateEmail` y la regla de longitud (T005), y agregar el patrón Unicode de nombre y la regla de fortaleza de research.md R4, hasta pasar T028 y T029
-- [ ] T033 [US2] Conectar `validateRegistration` en `registerReducer.ts`, `useRegisterForm.ts` y `RegisterForm.tsx`: errores visibles con `visibleErrors`, revalidación de la confirmación y foco en el primer campo con error, hasta pasar T030 y T031
+- [X] T032 [US2] Implementar `validateRegistration` en `src/domain/validation.ts` reutilizando `validateEmail` y la regla de longitud (T005), y agregar el patrón Unicode de nombre y la regla de fortaleza de research.md R4, hasta pasar T028 y T029
+- [X] T033 [US2] Conectar `validateRegistration` en `registerReducer.ts`, `useRegisterForm.ts` y `RegisterForm.tsx`: errores visibles con `visibleErrors`, revalidación de la confirmación y foco en el primer campo con error, hasta pasar T030 y T031
 
 **Checkpoint**: US1 y US2 funcionan; ningún registro se ejecuta con datos inválidos
 
@@ -136,14 +136,14 @@ y solo accede tras ingresar la contraseña creada
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T034 [P] [US3] Pruebas en `src/infrastructure/InMemoryRegistrationGateway.test.ts`: R2, un correo de demo o creado en la sesión (incluso con mayúsculas o espacios) → `email-taken` y el almacén no cambia (FR-012); R5, el resultado no incluye la contraseña
-- [ ] T035 [P] [US3] Pruebas de `registerReducer`: `result` `email-taken` deja el error `EMAIL_TAKEN` en el correo, vacía `password` y `confirmPassword` y conserva nombre y correo (REG-US3-1, REG-US3-3); editar el correo quita el error (REG-US3-2)
-- [ ] T036 [P] [US3] Pruebas en `src/ui/features/register/RegisterForm.test.tsx`: tras `email-taken`, el mensaje se anuncia como error del campo de correo y el foco va al correo (REG-US3-1)
+- [X] T034 [P] [US3] Pruebas en `src/infrastructure/InMemoryRegistrationGateway.test.ts`: R2, un correo de demo o creado en la sesión (incluso con mayúsculas o espacios) → `email-taken` y el almacén no cambia (FR-012); R5, el resultado no incluye la contraseña
+- [X] T035 [P] [US3] Pruebas de `registerReducer`: `result` `email-taken` deja el error `EMAIL_TAKEN` en el correo, vacía `password` y `confirmPassword` y conserva nombre y correo (REG-US3-1, REG-US3-3); editar el correo quita el error (REG-US3-2)
+- [X] T036 [P] [US3] Pruebas en `src/ui/features/register/RegisterForm.test.tsx`: tras `email-taken`, el mensaje se anuncia como error del campo de correo y el foco va al correo (REG-US3-1)
 
 ### Implementation for User Story 3
 
-- [ ] T037 [US3] Implementar el rechazo por correo existente en `InMemoryRegistrationGateway.ts`, usando `InMemoryAccountStore.add` (atómico), hasta pasar T034
-- [ ] T038 [US3] Implementar el manejo de `email-taken` en `registerReducer.ts` y el foco al correo en `RegisterForm.tsx`, hasta pasar T035 y T036
+- [X] T037 [US3] Implementar el rechazo por correo existente en `InMemoryRegistrationGateway.ts`, usando `InMemoryAccountStore.add` (atómico), hasta pasar T034
+- [X] T038 [US3] Implementar el manejo de `email-taken` en `registerReducer.ts` y el foco al correo en `RegisterForm.tsx`, hasta pasar T035 y T036
 
 **Checkpoint**: US1 a US3 funcionan de forma independiente
 
@@ -155,7 +155,7 @@ y solo accede tras ingresar la contraseña creada
 
 **Independent Test**: quickstart escenario 11
 
-- [ ] T039 [US4] Pruebas en `src/ui/features/register/RegisterForm.test.tsx`: hay dos botones "Mostrar contraseña"; activar uno solo cambia su campo a texto y su etiqueta a "Ocultar contraseña", con `aria-pressed` (REG-US4-1, REG-US4-2); operables con teclado (REG-US4-3). `PasswordField` ya cumple el comportamiento (001); si las pruebas pasan sin cambios, no se modifica código (YAGNI)
+- [X] T039 [US4] Pruebas en `src/ui/features/register/RegisterForm.test.tsx`: hay dos botones "Mostrar contraseña"; activar uno solo cambia su campo a texto y su etiqueta a "Ocultar contraseña", con `aria-pressed` (REG-US4-1, REG-US4-2); operables con teclado (REG-US4-3). `PasswordField` ya cumple el comportamiento (001); si las pruebas pasan sin cambios, no se modifica código (YAGNI)
 
 **Checkpoint**: US4 verificada
 
@@ -169,12 +169,12 @@ y solo accede tras ingresar la contraseña creada
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T040 [P] [US5] Pruebas en `src/ui/features/register/RegisterForm.test.tsx`: "términos y condiciones", "Google" y "Apple" muestran `status` "Función no disponible en esta demostración" y conservan los datos (REG-US5-3, FR-020)
-- [ ] T041 [P] [US5] Pruebas en `src/App.test.tsx`: con datos escritos en el registro, "Inicia sesión" muestra el login vacío; al volver a "Regístrate", el registro también está vacío (REG-US5-2)
+- [X] T040 [P] [US5] Pruebas en `src/ui/features/register/RegisterForm.test.tsx`: "términos y condiciones", "Google" y "Apple" muestran `status` "Función no disponible en esta demostración" y conservan los datos (REG-US5-3, FR-020)
+- [X] T041 [P] [US5] Pruebas en `src/App.test.tsx`: con datos escritos en el registro, "Inicia sesión" muestra el login vacío; al volver a "Regístrate", el registro también está vacío (REG-US5-2)
 
 ### Implementation for User Story 5
 
-- [ ] T042 [US5] Implementar en `RegisterForm.tsx` y `registerReducer.ts` el aviso de función no disponible y la llamada a `onLogin` en "Inicia sesión", hasta pasar T040 y T041
+- [X] T042 [US5] Implementar en `RegisterForm.tsx` y `registerReducer.ts` el aviso de función no disponible y la llamada a `onLogin` en "Inicia sesión", hasta pasar T040 y T041
 
 **Checkpoint**: todas las historias funcionan de forma independiente
 
@@ -184,12 +184,12 @@ y solo accede tras ingresar la contraseña creada
 
 **Purpose**: Mejoras que afectan a varias historias y controles de integración
 
-- [ ] T043 [P] Prueba en `src/App.test.tsx` del caso límite "servicio no disponible": con el almacén en `null`, el registro muestra la alerta "Servicio de registro no disponible. Intenta más tarde." y no expone detalles internos (FR-022)
-- [ ] T044 [P] Revisar `RegisterForm.module.css` y `LoginScreen.module.css` a 320 px, 480 px, 960 px y 1440 px: sin scroll horizontal y con el logo visible (FR-021); comparar con el frame `31:2` (SC-007)
-- [ ] T045 [P] Confirmar que ninguna prueba ni código escribe contraseñas en `console`, URL o almacenamiento del navegador (FR-015): `no-console` en ESLint y una búsqueda de `localStorage` y `sessionStorage` en `src/`
-- [ ] T046 [P] Actualizar `specs/001-login-billetera/contracts/ui-login.md` con los cambios de contracts/ui-registro.md ("Regístrate", aviso, correo precargado, foco) y agregar en `specs/001-login-billetera/spec.md` una nota en FR-016 que remita a 002 FR-019 (trazabilidad, 9.2)
-- [ ] T047 [P] Actualizar `README.md` con la pantalla de registro y el enlace a `specs/002-registro-billetera/quickstart.md` (8.3)
-- [ ] T048 Ejecutar `npm run verify`: todo en verde, con cobertura ≥ 80 % y no menor que la de T001
+- [X] T043 [P] Prueba en `src/App.test.tsx` del caso límite "servicio no disponible": con el almacén en `null`, el registro muestra la alerta "Servicio de registro no disponible. Intenta más tarde." y no expone detalles internos (FR-022)
+- [X] T044 [P] Revisar `RegisterForm.module.css` y `LoginScreen.module.css` a 320 px, 480 px, 960 px y 1440 px: sin scroll horizontal y con el logo visible (FR-021); comparar con el frame `31:2` (SC-007)
+- [X] T045 [P] Confirmar que ninguna prueba ni código escribe contraseñas en `console`, URL o almacenamiento del navegador (FR-015): `no-console` en ESLint y una búsqueda de `localStorage` y `sessionStorage` en `src/`
+- [X] T046 [P] Actualizar `specs/001-login-billetera/contracts/ui-login.md` con los cambios de contracts/ui-registro.md ("Regístrate", aviso, correo precargado, foco) y agregar en `specs/001-login-billetera/spec.md` una nota en FR-016 que remita a 002 FR-019 (trazabilidad, 9.2)
+- [X] T047 [P] Actualizar `README.md` con la pantalla de registro y el enlace a `specs/002-registro-billetera/quickstart.md` (8.3)
+- [X] T048 Ejecutar `npm run verify`: todo en verde, con cobertura ≥ 80 % y no menor que la de T001
 - [ ] T049 Ejecutar los 16 escenarios manuales de `specs/002-registro-billetera/quickstart.md` y registrar el resultado en la descripción del PR
 - [ ] T050 Abrir el PR desde `feature/registro-matias-lopez-mauro` para revisión por una persona distinta del autor. Mencionar las desviaciones de plan.md (correo duplicado explícito, contraste heredado, refactor del almacén) para su aprobación (9.3)
 

@@ -16,7 +16,7 @@ Textos exactos en español, tal como figuran en el diseño de Figma (nodo `2:2`)
 | Enviar | `button` "Iniciar sesión" | En carga: `aria-busy=true`, deshabilitado, texto "Iniciando sesión…" |
 | Separador | texto "o continúa con" | Decorativo |
 | Google / Apple | `button` "Google", `button` "Apple" | Muestran el aviso |
-| Registro | `button` "Regístrate" precedido por "¿No tienes cuenta?" | Muestra el aviso |
+| Registro | `button` "Regístrate" precedido por "¿No tienes cuenta?" | Abre la pantalla de registro (modificado por 002 FR-019; ver [ui-registro.md](../../002-registro-billetera/contracts/ui-registro.md#cambios-al-contrato-de-ui-del-login-001)) |
 
 **Errores por campo**: texto bajo el campo, vinculado con `aria-describedby`; el campo lleva
 `aria-invalid=true`.
@@ -40,6 +40,14 @@ Textos exactos en español, tal como figuran en el diseño de Figma (nodo `2:2`)
 
 Logo "KynWallet", titular "Tu dinero, sin fronteras.", texto de apoyo y la tarjeta ilustrativa
 (decorativa, `aria-hidden=true`). Por debajo de 960px solo se muestra el logo.
+
+## Vuelta desde el registro (002)
+
+| Elemento | Rol / nombre accesible | Notas |
+|---|---|---|
+| Aviso de cuenta creada | `status` "¡Listo, {nombre}! Tu cuenta fue creada. Inicia sesión con tu contraseña." | Desaparece al editar un campo o al enviar |
+| Correo | `textbox` "Correo electrónico" | Precargado con el correo registrado |
+| Contraseña | campo con etiqueta "Contraseña" | Vacía y con el foco |
 
 ## Teclado
 

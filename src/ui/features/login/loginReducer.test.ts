@@ -1,4 +1,9 @@
-import { initialLoginState, loginReducer, type LoginState } from './loginReducer';
+import {
+  createInitialLoginState,
+  initialLoginState,
+  loginReducer,
+  type LoginState,
+} from './loginReducer';
 
 const filled: LoginState = {
   ...initialLoginState,
@@ -103,5 +108,39 @@ describe('loginReducer', () => {
     const noticed = loginReducer(filled, { type: 'showNotice', message: 'Aviso' });
     expect(noticed.notice).toBe('Aviso');
     expect(loginReducer(noticed, { type: 'submit' }).notice).toBeNull();
+  });
+});
+
+describe('loginReducer · vuelta desde el registro (002 FR-014)', () => {
+  const fromRegistration = createInitialLoginState({
+    email: 'ana@example.test',
+    registeredNotice: '¡Listo, Ana! Tu cuenta fue creada. Inicia sesión con tu contraseña.',
+  });
+
+  it('sin argumentos equivale al estado inicial de 001', () => {
+    expect(createInitialLoginState()).toEqual(initialLoginState);
+    expect(initialLoginState.registeredNotice).toBeNull();
+  });
+
+  it('REG-US1-1: precarga el correo y el aviso, con la contraseña vacía', () => {
+    expect(fromRegistration.values).toEqual({ email: 'ana@example.test', password: '' });
+    expect(fromRegistration.registeredNotice).toMatch(/Tu cuenta fue creada/);
+  });
+
+  it('FR-014b: editar un campo limpia el aviso', () => {
+    const next = loginReducer(fromRegistration, {
+      type: 'change',
+      field: 'password',
+      value: 'C',
+    });
+    expect(next.registeredNotice).toBeNull();
+  });
+
+  it('FR-014b: enviar limpia el aviso', () => {
+    expect(loginReducer(fromRegistration, { type: 'submit' }).registeredNotice).toBeNull();
+  });
+
+  it('logout vuelve al estado vacío, sin el correo precargado', () => {
+    expect(loginReducer(fromRegistration, { type: 'logout' })).toEqual(initialLoginState);
   });
 });

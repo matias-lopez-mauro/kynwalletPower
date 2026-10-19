@@ -35,6 +35,10 @@ describe('InMemoryAccountStore (data-model.md)', () => {
     expect(store.findByEmail(TEST_ACCOUNT.email)).toEqual(TEST_ACCOUNT);
   });
 
+  it('add sin configuración lanza un error (el gateway lo convierte en unavailable)', () => {
+    expect(() => new InMemoryAccountStore(null).add(newAccount)).toThrow();
+  });
+
   it('no modifica el arreglo recibido', () => {
     const accounts = [TEST_ACCOUNT];
     new InMemoryAccountStore(accounts).add(newAccount);

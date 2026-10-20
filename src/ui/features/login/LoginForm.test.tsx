@@ -1,16 +1,18 @@
+import type { ComponentProps } from 'react';
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createAuthStub } from '@/test/authStub';
 import { TEST_ACCOUNT } from '@/test/fixtures';
 import { LoginForm } from './LoginForm';
 
-function setup(stub = createAuthStub()) {
+function setup(stub = createAuthStub(), props: Partial<ComponentProps<typeof LoginForm>> = {}) {
   const user = userEvent.setup();
-  render(<LoginForm authenticate={stub.authenticate} />);
+  const onRegister = vi.fn();
+  render(<LoginForm authenticate={stub.authenticate} onRegister={onRegister} {...props} />);
   const email = screen.getByLabelText('Correo electrónico');
   const password = screen.getByLabelText('Contraseña');
   const submit = () => user.click(screen.getByRole('button', { name: 'Iniciar sesión' }));
-  return { user, stub, email, password, submit };
+  return { user, stub, email, password, submit, onRegister };
 }
 
 describe('LoginForm · US1 Iniciar sesión con credenciales válidas', () => {
@@ -179,7 +181,8 @@ describe('LoginForm · US3 Validar los campos antes de enviar', () => {
 });
 
 describe('LoginForm · US5 Elementos del diseño fuera de alcance', () => {
-  it.each(['¿Olvidaste tu contraseña?', 'Google', 'Apple', 'Regístrate'])(
+  // "Regístrate" abre el registro desde 002 (FR-019); ver "LoginForm · registro".
+  it.each(['¿Olvidaste tu contraseña?', 'Google', 'Apple'])(
     'US5-1: "%s" muestra el aviso y conserva los datos',
     async (name) => {
       const { user, stub, email, password } = setup();
@@ -260,5 +263,41 @@ describe('LoginForm · seguridad (FR-012)', () => {
 
     setItem.mockRestore();
     consoleSpies.forEach((spy) => spy.mockRestore());
+  });
+});
+
+describe('LoginForm · registro (002)', () => {
+  const notice = '¡Listo, Ana Pérez! Tu cuenta fue creada. Inicia sesión con tu contraseña.';
+
+  it('REG-US5-1 / FR-019: "Regístrate" abre el registro sin mostrar el aviso', async () => {
+    const { user, onRegister } = setup();
+    await user.click(screen.getByRole('button', { name: 'Regístrate' }));
+    expect(onRegister).toHaveBeenCalledOnce();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it('REG-US1-1 / FR-014: correo precargado, contraseña vacía con el foco y aviso', () => {
+    const { email, password } = setup(createAuthStub(), {
+      initialEmail: 'ana@example.test',
+      registeredNotice: notice,
+    });
+    expect(email).toHaveValue('ana@example.test');
+    expect(password).toHaveValue('');
+    expect(password).toHaveFocus();
+    expect(screen.getByRole('status')).toHaveTextContent(notice);
+  });
+
+  it('FR-014b: el aviso desaparece al editar un campo', async () => {
+    const { user, password } = setup(createAuthStub(), {
+      initialEmail: 'ana@example.test',
+      registeredNotice: notice,
+    });
+    await user.type(password, 'C');
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it('sin correo precargado no se fuerza el foco', () => {
+    const { password } = setup();
+    expect(password).not.toHaveFocus();
   });
 });

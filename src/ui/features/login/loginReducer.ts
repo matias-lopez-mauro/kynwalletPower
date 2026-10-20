@@ -1,5 +1,6 @@
 import type { AuthResult } from '@/domain/auth';
 import { validateCredentials, type CredentialErrors } from '@/domain/validation';
+import { visibleErrors } from '@/ui/forms/visibleErrors';
 
 export type Field = 'email' | 'password';
 export type FieldErrors = CredentialErrors;
@@ -13,6 +14,8 @@ export type LoginState = {
   welcomeName: string | null;
   rememberMe: boolean;
   notice: string | null;
+  /** Aviso de cuenta creada al volver del registro (002 FR-014). */
+  registeredNotice: string | null;
 };
 
 export type LoginAction =
@@ -24,24 +27,31 @@ export type LoginAction =
   | { type: 'result'; result: AuthResult }
   | { type: 'logout' };
 
-export const initialLoginState: LoginState = {
-  status: 'editing',
-  values: { email: '', password: '' },
-  touched: { email: false, password: false },
-  fieldErrors: {},
-  authError: null,
-  welcomeName: null,
-  rememberMe: false,
-  notice: null,
-};
+/** Estado inicial; al volver del registro, con el correo y el aviso precargados (002 FR-014). */
+export function createInitialLoginState({
+  email = '',
+  registeredNotice = null,
+}: { email?: string; registeredNotice?: string | null } = {}): LoginState {
+  return {
+    status: 'editing',
+    values: { email, password: '' },
+    touched: { email: false, password: false },
+    fieldErrors: {},
+    authError: null,
+    welcomeName: null,
+    rememberMe: false,
+    notice: null,
+    registeredNotice,
+  };
+}
 
-/** Errores visibles: solo los de campos ya tocados (FR-005). */
-function visibleErrors(values: LoginState['values'], touched: LoginState['touched']): FieldErrors {
-  const errors = validateCredentials(values);
-  const visible: FieldErrors = {};
-  if (touched.email && errors.email) visible.email = errors.email;
-  if (touched.password && errors.password) visible.password = errors.password;
-  return visible;
+export const initialLoginState: LoginState = createInitialLoginState();
+
+function visibleLoginErrors(
+  values: LoginState['values'],
+  touched: LoginState['touched'],
+): FieldErrors {
+  return visibleErrors(validateCredentials(values), touched);
 }
 
 /** Máquina de estados del formulario (data-model.md, LoginFormState). */
@@ -53,14 +63,15 @@ export function loginReducer(state: LoginState, action: LoginAction): LoginState
         ...state,
         status: state.status === 'authError' ? 'editing' : state.status,
         authError: null,
+        registeredNotice: null,
         values,
-        fieldErrors: visibleErrors(values, state.touched),
+        fieldErrors: visibleLoginErrors(values, state.touched),
       };
     }
 
     case 'blur': {
       const touched = { ...state.touched, [action.field]: true };
-      return { ...state, touched, fieldErrors: visibleErrors(state.values, touched) };
+      return { ...state, touched, fieldErrors: visibleLoginErrors(state.values, touched) };
     }
 
     case 'toggleRemember':
@@ -73,10 +84,18 @@ export function loginReducer(state: LoginState, action: LoginAction): LoginState
     case 'submit': {
       if (state.status === 'submitting') return state;
       const touched = { email: true, password: true };
-      const fieldErrors = visibleErrors(state.values, touched);
+      const fieldErrors = visibleLoginErrors(state.values, touched);
       // FR-006: no se autentica mientras existan errores de validación.
       const status = Object.keys(fieldErrors).length > 0 ? 'editing' : 'submitting';
-      return { ...state, status, touched, fieldErrors, authError: null, notice: null };
+      return {
+        ...state,
+        status,
+        touched,
+        fieldErrors,
+        authError: null,
+        notice: null,
+        registeredNotice: null,
+      };
     }
 
     case 'result':

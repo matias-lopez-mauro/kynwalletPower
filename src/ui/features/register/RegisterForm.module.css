@@ -1,0 +1,6 @@
+/* Figma 31:2: 16 px entre campos, frente a 22 px en el login (research.md R2). */
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

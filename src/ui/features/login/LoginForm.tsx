@@ -10,17 +10,35 @@ import { SocialButton } from '@/ui/components/SocialButton/SocialButton';
 import { TextField } from '@/ui/components/TextField/TextField';
 import { useLoginForm } from './useLoginForm';
 import { WelcomeView } from './WelcomeView';
+import formStyles from '@/ui/forms/authForm.module.css';
 import styles from './LoginForm.module.css';
 
 type LoginFormProps = {
   authenticate: Authenticate;
+  /** Abre la pantalla de registro (002 FR-019). */
+  onRegister: () => void;
+  /** Correo recién registrado, precargado al volver del registro (002 FR-014). */
+  initialEmail?: string;
+  registeredNotice?: string;
 };
 
-export function LoginForm({ authenticate }: LoginFormProps) {
-  const { state, change, blur, submit, logout, toggleRemember, showNotice } =
-    useLoginForm(authenticate);
+export function LoginForm({
+  authenticate,
+  onRegister,
+  initialEmail,
+  registeredNotice,
+}: LoginFormProps) {
+  const { state, change, blur, submit, logout, toggleRemember, showNotice } = useLoginForm(
+    authenticate,
+    { email: initialEmail, registeredNotice },
+  );
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
+
+  // 002 FR-014: al volver del registro, el usuario ingresa la contraseña que acaba de crear.
+  useEffect(() => {
+    if (initialEmail) passwordRef.current?.focus();
+  }, [initialEmail]);
 
   // US2-4: tras credenciales incorrectas, el foco vuelve a la contraseña.
   useEffect(() => {
@@ -43,11 +61,13 @@ export function LoginForm({ authenticate }: LoginFormProps) {
   const notAvailable = () => showNotice(MESSAGES.FEATURE_UNAVAILABLE);
 
   return (
-    <form className={styles.form} noValidate onSubmit={handleSubmit}>
-      <div className={styles.heading}>
-        <h1 className={styles.title}>Bienvenido de nuevo</h1>
-        <p className={styles.subtitle}>Ingresa a tu cuenta para continuar</p>
+    <form className={formStyles.form} noValidate onSubmit={handleSubmit}>
+      <div className={formStyles.heading}>
+        <h1 className={formStyles.title}>Bienvenido de nuevo</h1>
+        <p className={formStyles.subtitle}>Ingresa a tu cuenta para continuar</p>
       </div>
+
+      {state.registeredNotice && <Alert tone="info">{state.registeredNotice}</Alert>}
 
       <TextField
         label="Correo electrónico"
@@ -99,16 +119,16 @@ export function LoginForm({ authenticate }: LoginFormProps) {
 
       <Divider>o continúa con</Divider>
 
-      <div className={styles.social}>
+      <div className={formStyles.social}>
         <SocialButton provider="Google" onClick={notAvailable} />
         <SocialButton provider="Apple" onClick={notAvailable} />
       </div>
 
       {state.notice && <Alert tone="info">{state.notice}</Alert>}
 
-      <p className={styles.footer}>
+      <p className={formStyles.footer}>
         ¿No tienes cuenta?
-        <Button variant="link" onClick={notAvailable}>
+        <Button variant="link" onClick={onRegister}>
           Regístrate
         </Button>
       </p>

@@ -17,7 +17,7 @@ Textos exactos en español, tal como figuran en el diseño de Figma (nodo `31:2`
 | Ver términos | `button` "términos y condiciones" | Muestra el aviso de función no disponible |
 | Enviar | `button` "Crear cuenta" | En carga: `aria-busy=true`, deshabilitado, texto "Creando cuenta…" |
 | Separador | texto "o regístrate con" | Decorativo |
-| Google / Apple | `button` "Google", `button` "Apple" | Muestran el aviso |
+| Google / Apple | `button` "Google", `button` "Apple" | Muestran el aviso "Próximamente" (FR-020a) |
 | Ir al login | `button` "Inicia sesión" precedido por "¿Ya tienes cuenta?" | Vuelve al login vacío (US5-2) |
 
 **Errores por campo**: texto bajo el campo, vinculado con `aria-describedby`; el campo lleva
@@ -29,7 +29,8 @@ correo.
 | Caso | Rol | Texto |
 |---|---|---|
 | No disponible | `alert` | "Servicio de registro no disponible. Intenta más tarde." |
-| Función fuera de alcance | `status` | "Función no disponible en esta demostración" |
+| Función fuera de alcance ("términos y condiciones") | `status` | "Función no disponible en esta demostración" |
+| Registro con Google o Apple | `status` | "Próximamente" |
 
 ## Panel de marca
 

@@ -88,7 +88,7 @@ Lo que el caso de uso entrega al puerto: `{ fullName, email, password }`, con `f
 | `acceptedTerms` | boolean | Casilla de términos |
 | `touched` | por campo, incluido `acceptedTerms` | Validación al salir (FR-008) |
 | `fieldErrors` | `RegistrationErrors` | Errores visibles; incluye `email` = "Ya existe una cuenta con este correo" tras `email-taken` |
-| `notice` | `string \| null` | "Función no disponible en esta demostración" (FR-020) |
+| `notice` | `string \| null` | "Función no disponible en esta demostración" (FR-020) o "Próximamente" (Google y Apple, FR-020a) |
 
 **Transiciones clave**:
 

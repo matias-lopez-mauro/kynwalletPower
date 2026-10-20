@@ -227,18 +227,19 @@ describe('RegisterForm · US4 Mostrar u ocultar las contraseñas', () => {
 });
 
 describe('RegisterForm · US5 Navegación y elementos fuera de alcance', () => {
-  it.each(['términos y condiciones', 'Google', 'Apple'])(
-    'REG-US5-3: "%s" muestra el aviso y conserva los datos',
-    async (name) => {
-      const { user, fields, register } = setup();
-      await user.type(fields.fullName, 'Ana Pérez');
-      await user.click(screen.getByRole('button', { name }));
-      expect(screen.getByRole('status')).toHaveTextContent(MESSAGES.FEATURE_UNAVAILABLE);
-      expect(fields.fullName).toHaveValue('Ana Pérez');
-      expect(fields.terms).not.toBeChecked();
-      expect(register).not.toHaveBeenCalled();
-    },
-  );
+  it.each([
+    ['REG-US5-3', 'términos y condiciones', MESSAGES.FEATURE_UNAVAILABLE],
+    ['REG-US5-4 / FR-020a', 'Google', MESSAGES.COMING_SOON],
+    ['REG-US5-4 / FR-020a', 'Apple', MESSAGES.COMING_SOON],
+  ])('%s: "%s" muestra "%s" y conserva los datos', async (_id, name, message) => {
+    const { user, fields, register } = setup();
+    await user.type(fields.fullName, 'Ana Pérez');
+    await user.click(screen.getByRole('button', { name }));
+    expect(screen.getByRole('status')).toHaveTextContent(message);
+    expect(fields.fullName).toHaveValue('Ana Pérez');
+    expect(fields.terms).not.toBeChecked();
+    expect(register).not.toHaveBeenCalled();
+  });
 
   it('REG-US5-2: "Inicia sesión" llama a onLogin', async () => {
     const { user, onLogin } = setup();

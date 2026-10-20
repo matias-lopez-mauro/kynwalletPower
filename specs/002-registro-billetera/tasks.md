@@ -169,7 +169,7 @@ y solo accede tras ingresar la contraseña creada
 
 ### Tests for User Story 5 ⚠️
 
-- [X] T040 [P] [US5] Pruebas en `src/ui/features/register/RegisterForm.test.tsx`: "términos y condiciones", "Google" y "Apple" muestran `status` "Función no disponible en esta demostración" y conservan los datos (REG-US5-3, FR-020)
+- [X] T040 [P] [US5] Pruebas en `src/ui/features/register/RegisterForm.test.tsx`: "términos y condiciones", "Google" y "Apple" muestran `status` "Función no disponible en esta demostración" y conservan los datos (REG-US5-3, FR-020). *Actualizado el 2026-10-20: Google y Apple muestran "Próximamente" (REG-US5-4, FR-020a).*
 - [X] T041 [P] [US5] Pruebas en `src/App.test.tsx`: con datos escritos en el registro, "Inicia sesión" muestra el login vacío; al volver a "Regístrate", el registro también está vacío (REG-US5-2)
 
 ### Implementation for User Story 5

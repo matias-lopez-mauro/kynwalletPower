@@ -29,7 +29,8 @@ Siendo `<demo>` el correo de una cuenta definida en `.env.local`:
 | 9 | Contraseñas "clavesegura1" y "clave-segura" | Sin error de contraseña | US2-6 |
 | 10 | Confirmación distinta | "Las contraseñas no coinciden"; al corregir la contraseña se reevalúa | US2-7, US2-9 |
 | 11 | Activar cada icono de visibilidad | Cada campo se muestra y oculta por separado | US4 |
-| 12 | Presionar "términos y condiciones", Google o Apple | "Función no disponible en esta demostración"; datos conservados | US5-3 |
+| 12 | Presionar "términos y condiciones" | "Función no disponible en esta demostración"; datos conservados | US5-3 |
+| 12b | Presionar Google o Apple | "Próximamente"; datos conservados | US5-4, FR-020a |
 | 13 | Presionar "Inicia sesión" con datos escritos | Login vacío; al volver al registro, los campos están vacíos | US5-2 |
 | 14 | Recargar tras el paso 2 e iniciar sesión con la cuenta creada | "Correo o contraseña incorrectos" (no hay persistencia) | Caso límite |
 | 15 | Borrar `VITE_DEMO_USERS`, reiniciar y registrarse | "Servicio de registro no disponible. Intenta más tarde." | Caso límite |

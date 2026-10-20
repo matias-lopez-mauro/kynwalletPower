@@ -64,6 +64,8 @@ export function RegisterForm({ register, onRegistered, onLogin }: RegisterFormPr
 
   // FR-020: elementos del diseño fuera del alcance de la demostración.
   const notAvailable = () => showNotice(MESSAGES.FEATURE_UNAVAILABLE);
+  // FR-020a: el registro con Google o Apple se anuncia como próximo.
+  const comingSoon = () => showNotice(MESSAGES.COMING_SOON);
 
   return (
     <form className={formStyles.form} noValidate onSubmit={handleSubmit}>
@@ -148,8 +150,8 @@ export function RegisterForm({ register, onRegistered, onLogin }: RegisterFormPr
       <Divider>o regístrate con</Divider>
 
       <div className={formStyles.social}>
-        <SocialButton provider="Google" onClick={notAvailable} />
-        <SocialButton provider="Apple" onClick={notAvailable} />
+        <SocialButton provider="Google" onClick={comingSoon} />
+        <SocialButton provider="Apple" onClick={comingSoon} />
       </div>
 
       {state.notice && <Alert tone="info">{state.notice}</Alert>}

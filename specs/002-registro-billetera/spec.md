@@ -41,6 +41,12 @@ login.
 - Q: ¿Qué reglas debe cumplir la contraseña en el registro? → A: La misma longitud del login
   (8 a 128 caracteres) y, además, al menos una mayúscula, un número o un símbolo (basta uno).
 
+### Session 2026-10-20
+
+- Q: ¿Qué aviso se muestra al presionar Google o Apple en el registro? → A: "Próximamente".
+  "Términos y condiciones" mantiene "Función no disponible en esta demostración", y el login no
+  cambia.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Crear una cuenta con datos válidos (Priority: P1)
@@ -188,8 +194,10 @@ registro se activa "Inicia sesión" y se vuelve al login; se activan "términos 
 2. **Given** la pantalla de registro, **When** el usuario activa "Inicia sesión", **Then** se
    muestra la pantalla de inicio de sesión y los datos del registro no se conservan.
 3. **Given** la pantalla de registro, **When** el usuario activa "términos y condiciones",
-   "Google" o "Apple", **Then** se muestra el aviso "Función no disponible en esta demostración"
-   y la pantalla conserva los datos ingresados.
+   **Then** se muestra el aviso "Función no disponible en esta demostración" y la pantalla
+   conserva los datos ingresados.
+4. **Given** la pantalla de registro, **When** el usuario activa "Google" o "Apple", **Then** se
+   muestra el aviso "Próximamente" y la pantalla conserva los datos ingresados.
 
 ---
 
@@ -275,7 +283,10 @@ registro se activa "Inicia sesión" y se vuelve al login; se activan "términos 
 - **FR-019**: El enlace "Regístrate" del login DEBE abrir esta pantalla (reemplaza el aviso de
   "no disponible" definido en 001 FR-016) y el enlace "Inicia sesión" DEBE volver al login.
 - **FR-020**: Los elementos "términos y condiciones", "Google" y "Apple" DEBEN mostrarse según el
-  diseño y, al activarse, informar "Función no disponible en esta demostración".
+  diseño. Al activarse, "términos y condiciones" DEBE informar "Función no disponible en esta
+  demostración".
+- **FR-020a**: En la pantalla de registro, al activarse "Google" o "Apple", el sistema DEBE
+  informar "Próximamente". Los botones del login (001 FR-016) no cambian.
 - **FR-021**: La pantalla DEBE adaptarse a anchos desde 320 px hasta escritorio sin
   desplazamiento horizontal; en anchos reducidos el panel de marca puede simplificarse u
   ocultarse manteniendo el logo visible, igual que en el login.
